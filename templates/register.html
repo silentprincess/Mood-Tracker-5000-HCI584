@@ -11,9 +11,13 @@
 
     <form method = "POST" action = ""> <!--Creates the REGISTER FORM-->
         {{ form.hidden_tag() }}
+        <br>
         {{ form.username }}
+        <br>
         {{ form.password }}
+        <br>
         {{ form.submit }}
+        <br>
     </form>
 
     <a href="{{url_for('login')}}">Login</a><br>

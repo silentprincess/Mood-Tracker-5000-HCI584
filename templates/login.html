@@ -8,13 +8,18 @@
 </head>
 <body>
     <h1>Login Page</h1>
-
+    <br>
     <form method = "POST" action = ""> <!--Creates the LOGIN Form-->
         {{ form.hidden_tag() }}
+        <br>
         {{ form.username }}
+        <br>
         {{ form.password }}
+        <br>
         {{ form.submit }}
+        <br>
     </form>
+    <br>
 
     <a href="{{url_for('register')}}">Register</a><br>
     <a href="{{url_for('home')}}">Home</a><br>
