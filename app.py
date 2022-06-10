@@ -47,7 +47,11 @@ class MoodEntry(FlaskForm): #creates form for mood entry, gives multiple choices
     sad = SubmitField("Sad")
     angry = SubmitField("Angry")
     meh = SubmitField("Meh")
+    romantic = SubmitField("Romantic")
+    stressed = SubmitField("Stressed")
+    fearful = SubmitField("Fearful")
     journal = TextAreaField("Submit journal entry here...")
+
 @app.route("/")
 def home():
     return render_template('home.html')
