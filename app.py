@@ -3,7 +3,7 @@ from flask import Flask, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, RadioField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt #used to hash passwords
 
@@ -42,9 +42,20 @@ class LoginForm(FlaskForm): #creates login form to be added to html pages
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Login")
 
+class MoodEntry(FlaskForm): #creates form for mood entry, gives multiple choices
+    happy = SubmitField("Happy")
+    sad = SubmitField("Sad")
+    angry = SubmitField("Angry")
+    meh = SubmitField("Meh")
+    journal = TextAreaField("Submit journal entry here...")
 @app.route("/")
 def home():
     return render_template('home.html')
+
+@app.route("/moodentry", methods = ['GET', 'POST'])
+def moodentry():
+    form = MoodEntry()
+    return render_template('moodentry.html', form = form)
 
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
