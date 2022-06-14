@@ -1,4 +1,5 @@
 from asyncio.base_futures import _format_callbacks
+from operator import and_
 from flask import Flask, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
@@ -6,6 +7,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, RadioField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt #used to hash passwords
+import datetime
+from sqlalchemy import and_
+from sqlalchemy import extract
+from sqlalchemy.ext.hybrid import hybrid_property
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -23,9 +28,17 @@ def load_user(user_id):
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
+    #moodIcon = db.Column("mood", db.Integer)
+    #moodJournal = db.Column("journal", db.String(300))
+
+    #def AddMood(moodChoice):
+        #today = datetime.datetime.now()
+        #moodIconToday = db.Column(db.Integer, nullable = False)
+        #moodJournalToday = db.Column(db.String(300), nullable = False)
+
 
 class RegisterForm(FlaskForm): #creates register form to be added to html pages
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
@@ -43,14 +56,30 @@ class LoginForm(FlaskForm): #creates login form to be added to html pages
     submit = SubmitField("Login")
 
 class MoodEntry(FlaskForm): #creates form for mood entry, gives multiple choices
-    #happy = SubmitField("Happy")
-    #sad = SubmitField("Sad")
-    #angry = SubmitField("Angry")
-    #meh = SubmitField("Meh")
-    #romantic = SubmitField("Romantic")
-    #stressed = SubmitField("Stressed")
-    #fearful = SubmitField("Fearful")
+    happy = SubmitField("Happy")
+    sad = SubmitField("Sad")
+    angry = SubmitField("Angry")
+    meh = SubmitField("Meh")
+    romantic = SubmitField("Romantic")
+    stressed = SubmitField("Stressed")
     journal = TextAreaField("Submit journal entry here...")
+
+#def moodAssignment(mood):
+    #mood = 0
+    #if mood == happy:
+    #    mood = 1
+    #elif mood == sad:
+    #    mood = 2
+    #elif mood == angry:
+    #    mood = 3
+    #elif mood == meh:
+    #    mood = 4
+    #elif mood == romantic:
+    #    mood = 5
+    #else:
+    #    mood = 6
+    #    return MoodEntry.query.get(mood)
+
 
 @app.route("/")
 def home():
