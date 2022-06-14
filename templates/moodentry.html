@@ -14,12 +14,33 @@
         {{ form.hidden_tag() }}
         <br>
         {{ form.happy }}
-        <br>
+        <button type ="image"><img src="{{url_for('static', filename='Glad_Froggo.png')}}" height = "80" width="80"/></button>
+    
+
         {{ form.sad }}
-        <br>
+        <button type ="image"><img src="{{url_for('static', filename='Sad_Froggo.png')}}" height = "80" width="80"/></button>
+        
+
         {{ form.angry }}
-        <br>
+        <button type ="image"><img src="{{url_for('static', filename='Mad_Froggo.png')}}" height = "80" width="80"/></button>
+    
+
         {{ form.meh }}
+        <button type ="image"><img src="{{url_for('static', filename='Meh_Froggo.png')}}" height = "80" width="80"/></button>
+        
+
+        {{ form.romantic }}
+        <button type ="image"><img src="{{url_for('static', filename='Romantic_Froggo.png')}}" height = "80" width="80"/></button>
+    
+
+        {{ form.stressed }}
+        <button type ="image"><img src="{{url_for('static', filename='Anxious_Froggo.png')}}" height = "80" width="80"/></button>
+    
+
+        {{ form.fearful }}
+        <button type ="image"><img src="{{url_for('static', filename='Fearful_Froggo.png')}}" height = "80" width="80"/></button>
+        
+        <br>
         <br>
         {{ form.journal }}
     </form>

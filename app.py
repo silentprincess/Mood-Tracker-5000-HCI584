@@ -43,13 +43,13 @@ class LoginForm(FlaskForm): #creates login form to be added to html pages
     submit = SubmitField("Login")
 
 class MoodEntry(FlaskForm): #creates form for mood entry, gives multiple choices
-    happy = SubmitField("Happy")
-    sad = SubmitField("Sad")
-    angry = SubmitField("Angry")
-    meh = SubmitField("Meh")
-    romantic = SubmitField("Romantic")
-    stressed = SubmitField("Stressed")
-    fearful = SubmitField("Fearful")
+    #happy = SubmitField("Happy")
+    #sad = SubmitField("Sad")
+    #angry = SubmitField("Angry")
+    #meh = SubmitField("Meh")
+    #romantic = SubmitField("Romantic")
+    #stressed = SubmitField("Stressed")
+    #fearful = SubmitField("Fearful")
     journal = TextAreaField("Submit journal entry here...")
 
 @app.route("/")
