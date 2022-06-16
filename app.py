@@ -34,11 +34,11 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
-    #moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
+    moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
 
 
 class Mood(db.Model): #creating mood table
-    date = db.Column(db.Date, primary_key=True)
+    date = db.Column(db.Date, db.ForeignKey('user.id'), nullable = False, primary_key=True)
     #user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False, primary_key=True)
     happy = db.Column(db.Integer) #creates column for happy mood choice
     sad = db.Column(db.Integer) #creates column for sad mood choice
@@ -77,7 +77,7 @@ class MoodEntry(FlaskForm): #creates form for mood entry, gives multiple choices
 def home():
     return render_template('home.html')
 
-@app.route("/moodentry", methods = ['GET', 'POST'])
+@app.route("/moodentry", methods = ['GET', 'POST']) #creates mood entry page
 @login_required #must log in to access
 def moodentry():
     form = MoodEntry()
@@ -95,10 +95,13 @@ def moodentry():
         elif form.stressed.data: 
             mood = 6
         print("You have selected", mood)
-        return redirect(url_for('home'))
+    if form.validate_on_submit:
+        if form.journal.data:
+            journal = form.journal.data
+        print("Here is your journal entry:", journal)
     return render_template('moodentry.html', form = form)
 
-@app.route("/login", methods = ['GET', 'POST'])
+@app.route("/login", methods = ['GET', 'POST']) #creates login page with loginform
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -109,13 +112,13 @@ def login():
                 return redirect(url_for('dashboard'))
     return render_template('login.html', form = form)
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout', methods=['GET', 'POST']) #creates logout page
 @login_required #have to be logged in to log out
 def logout():
     logout_user()
     return(redirect(url_for('login'))) #redirects to login page
 
-@app.route('/dashboard', methods = ['GET', 'POST'])
+@app.route('/dashboard', methods = ['GET', 'POST']) #creates User Dash
 @login_required
 def dashboard():
         return redirect(url_for('moodentry'))
