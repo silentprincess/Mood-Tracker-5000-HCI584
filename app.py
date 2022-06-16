@@ -95,7 +95,7 @@ def moodentry():
         elif form.stressed.data: 
             mood = 6
         print("You have selected", mood)
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('home'))
     return render_template('moodentry.html', form = form)
 
 @app.route("/login", methods = ['GET', 'POST'])
