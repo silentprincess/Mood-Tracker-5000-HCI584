@@ -34,24 +34,18 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
-    moods = db.relationship('Mood', backref='User', lazy = True)
-    #moodIcon = db.Column("mood", db.Integer)
-    #moodJournal = db.Column("journal", db.String(300))
+    moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table
 
-    #def AddMood(moodIcon, moodJournal):
-    #    today = datetime.datetime.now()
-    #    moodIconToday = db.Column("mood", db.Integer, nullable = False)
-    #    moodJournalToday = db.Column("journal", db.String(500), nullable = False)
 
-class Mood(db.Model):
+class Mood(db.Model): #creating mood table
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False, primary_key=True)
-    happy = db.Column(db.Integer)
-    sad = db.Column(db.Integer)
-    angry = db.Column(db.Integer)
-    meh = db.Column(db.Integer)
-    romantic = db.Column(db.Integer)
-    stressed = db.Column(db.Integer)
-    journal = db.Column(db.String(1000))
+    happy = db.Column(db.Integer) #creates column for happy mood choice
+    sad = db.Column(db.Integer) #creates column for sad mood choice
+    angry = db.Column(db.Integer) #creates column for angry mood choice
+    meh = db.Column(db.Integer) #creates column for meh mood choice
+    romantic = db.Column(db.Integer) #creates column for romantic mood choice
+    stressed = db.Column(db.Integer) #creates column for stressed mood choice
+    journal = db.Column(db.String(1000)) #creates column for journal entries
 
 class RegisterForm(FlaskForm): #creates register form to be added to html pages
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
@@ -76,23 +70,6 @@ class MoodEntry(FlaskForm): #creates form for mood entry, gives multiple choices
     romantic = SubmitField("Romantic")
     stressed = SubmitField("Stressed")
     journal = TextAreaField("Submit journal entry here...")
-#    mood = 0
-
-    #def moodAssignment():
-    #    if SubmitField == happy:
-    #        mood = 1
-    #    elif SubmitField == sad:
-    #        mood = 2
-    #    elif SubmitField == angry:
-    #        mood = 3
-    #    elif SubmitField == meh:
-    #        mood = 4
-    #    elif SubmitField == romantic:
-    #        mood = 5
-    #    else:
-    #        mood = 6
-        
-
 
 
 @app.route("/")
