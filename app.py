@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
-    moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
+    #moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
 
 
 class Mood(db.Model): #creating mood table
@@ -81,6 +81,21 @@ def home():
 @login_required #must log in to access
 def moodentry():
     form = MoodEntry()
+    if form.validate_on_submit():
+        if form.happy.data:
+            mood = 1
+        elif form.sad.data:
+            mood = 2
+        elif form.angry.data:
+            mood = 3
+        elif form.meh.data:
+            mood = 4
+        elif form.romantic.data:
+            mood = 5
+        elif form.stressed.data: 
+            mood = 6
+        print("You have selected", mood)
+        return redirect(url_for('dashboard'))
     return render_template('moodentry.html', form = form)
 
 @app.route("/login", methods = ['GET', 'POST'])
@@ -103,7 +118,7 @@ def logout():
 @app.route('/dashboard', methods = ['GET', 'POST'])
 @login_required
 def dashboard():
-        return render_template('dashboard.html')
+        return redirect(url_for('moodentry'))
 
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
