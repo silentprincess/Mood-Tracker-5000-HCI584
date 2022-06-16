@@ -95,10 +95,10 @@ def moodentry():
         elif form.stressed.data: 
             mood = 6
         print("You have selected", mood)
-    if form.validate_on_submit:
-        if form.journal.data:
-            journal = form.journal.data
-        print("Here is your journal entry:", journal)
+        if form.validate_on_submit:
+            if form.journal.data:
+                journal = form.journal.data
+            print("Here is your journal entry:", journal)
     return render_template('moodentry.html', form = form)
 
 @app.route("/login", methods = ['GET', 'POST']) #creates login page with loginform
@@ -121,7 +121,7 @@ def logout():
 @app.route('/dashboard', methods = ['GET', 'POST']) #creates User Dash
 @login_required
 def dashboard():
-        return redirect(url_for('moodentry'))
+    return render_template('dashboard.html')
 
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
