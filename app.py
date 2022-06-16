@@ -70,7 +70,7 @@ class MoodEntry(FlaskForm): #creates form for mood entry, gives multiple choices
     meh = SubmitField("Meh")
     romantic = SubmitField("Romantic")
     stressed = SubmitField("Stressed")
-    journal = TextAreaField("Submit journal entry here...")
+    journal = TextAreaField(validators = [InputRequired(), Length(min=4, max=1000)], render_kw={"placeholder": "Type your journal entry here..."})
 
 
 @app.route("/")
