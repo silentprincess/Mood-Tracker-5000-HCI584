@@ -45,13 +45,13 @@ class User(db.Model, UserMixin):
 
 class Mood(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False, primary_key=True)
-    happy = db.Column()
-    sad = db.Column()
-    angry = db.Column()
-    meh = db.Column()
-    romantic = db.Column()
-    stressed = db.Column()
-    journal = db.Column()
+    happy = db.Column(db.Integer)
+    sad = db.Column(db.Integer)
+    angry = db.Column(db.Integer)
+    meh = db.Column(db.Integer)
+    romantic = db.Column(db.Integer)
+    stressed = db.Column(db.Integer)
+    journal = db.Column(db.String(1000))
 
 class RegisterForm(FlaskForm): #creates register form to be added to html pages
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
