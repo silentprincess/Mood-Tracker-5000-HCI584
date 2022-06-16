@@ -34,11 +34,12 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
-    moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table
+    moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
 
 
 class Mood(db.Model): #creating mood table
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False, primary_key=True)
+    date = db.Column(db.Date, primary_key=True)
+    #user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False, primary_key=True)
     happy = db.Column(db.Integer) #creates column for happy mood choice
     sad = db.Column(db.Integer) #creates column for sad mood choice
     angry = db.Column(db.Integer) #creates column for angry mood choice
@@ -77,6 +78,7 @@ def home():
     return render_template('home.html')
 
 @app.route("/moodentry", methods = ['GET', 'POST'])
+@login_required #must log in to access
 def moodentry():
     form = MoodEntry()
     return render_template('moodentry.html', form = form)
