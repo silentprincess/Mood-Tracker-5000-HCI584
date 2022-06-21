@@ -14,6 +14,8 @@ import datetime
 from sqlalchemy import and_
 from sqlalchemy import extract
 from sqlalchemy.ext.hybrid import hybrid_property
+from validate_email import *
+
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -28,10 +30,12 @@ login_manager.login_view = "login"
 @login_manager.user_loader #reloads the user object from the user ID stored in session
 def load_user(user_id):
     return User.query.get(int(user_id))
+    
 
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
+    #email = db.Column(db.email, nullable = False, unique = True) 
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
     moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
