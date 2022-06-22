@@ -32,10 +32,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
     
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
-    #email = db.Column(db.email, nullable = False, unique = True) 
+    email = db.Column(db.String(20), nullable = False, unique = True) #email can have max of 20 characters, field cannot be empty, cannot be 2 or more of the same email
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
     moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
@@ -53,6 +52,7 @@ class Mood(db.Model): #creating mood table
     journal = db.Column(db.String(1000)) #creates column for journal entries
 
 class RegisterForm(FlaskForm): #creates register form to be added to html pages
+    email = StringField(validators=[InputRequired(), Length (min=3, max=16)], render_kw={"placeholder": "Email"})
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Register")
@@ -61,6 +61,15 @@ def validate_username(self, username):
     existing_user_username = User.query.filter_by(username=username.data).first() #queries database to check if there are duplicate usernames
     if existing_user_username: #if there's a duplicate username, gives validation error
         raise ValidationError("That username is taken. Please choose a different one.")
+
+def val_email(self, email):
+    existing_user_email = User.query.filter_by(email = email.data).first()
+    if existing_user_email:
+        raise ValidationError("That email has already been used, choose a different one.")
+    if is_valid_email_address() == None:
+        pass
+    else:
+        raise ValidationError("That email address is not valid, please try again.")
 
 class LoginForm(FlaskForm): #creates login form to be added to html pages
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})

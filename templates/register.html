@@ -13,11 +13,15 @@
     <form method = "POST" action = ""> <!--Creates the REGISTER FORM-->
         {{ form.hidden_tag() }}
         <br>
+        {{ form.email }}
+        <br>
         {{ form.username }}
         <br>
         {{ form.password }}
         <br>
+        <br>
         {{ form.submit }}
+        <br>
         <br>
     </form>
 
