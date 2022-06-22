@@ -34,7 +34,7 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
-    email = db.Column(db.String(20), nullable = False, unique = True) #email can have max of 20 characters, field cannot be empty, cannot be 2 or more of the same email
+    email = db.Column(db.String(20), nullable = False, unique=True) #email can have max of 20 characters, field cannot be empty, cannot be 2 or more of the same email
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
     moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
@@ -63,13 +63,9 @@ def validate_username(self, username):
         raise ValidationError("That username is taken. Please choose a different one.")
 
 def val_email(self, email):
-    existing_user_email = User.query.filter_by(email = email.data).first()
+    existing_user_email = User.query.filter_by(email=email.data).first()
     if existing_user_email:
         raise ValidationError("That email has already been used, choose a different one.")
-    if is_valid_email_address() == None:
-        pass
-    else:
-        raise ValidationError("That email address is not valid, please try again.")
 
 class LoginForm(FlaskForm): #creates login form to be added to html pages
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
@@ -142,7 +138,7 @@ def register():
 
     if form.validate_on_submit(): #encrypting passwords for registration
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password = hashed_password)
+        new_user = User(email=form.email.data, username=form.username.data, password = hashed_password)
         db.session.add(new_user)
         db.session.commit() #commit new user to database
         return redirect(url_for('login'))
