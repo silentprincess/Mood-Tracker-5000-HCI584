@@ -8,13 +8,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, RadioField, TextAreaField
-from wtforms.validators import InputRequired, Length, ValidationError
+from wtforms.validators import InputRequired, Length, ValidationError, Email
 from flask_bcrypt import Bcrypt #used to hash passwords
 import datetime
 from sqlalchemy import and_
 from sqlalchemy import extract
 from sqlalchemy.ext.hybrid import hybrid_property
-from validate_email import *
 
 
 app = Flask(__name__)
@@ -22,7 +21,6 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
-
 login_manager = LoginManager() #allows app and flask to handle things while logging in
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -52,7 +50,7 @@ class Mood(db.Model): #creating mood table
     journal = db.Column(db.String(1000)) #creates column for journal entries
 
 class RegisterForm(FlaskForm): #creates register form to be added to html pages
-    email = StringField(validators=[InputRequired(), Length (min=3, max=16)], render_kw={"placeholder": "Email"})
+    email = StringField(validators=[InputRequired(), Email(message='Invalid email, please try again.'), Length (min=3, max=16)], render_kw={"placeholder": "Email"})
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Register")
