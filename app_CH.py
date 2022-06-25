@@ -119,7 +119,7 @@ def moodentry():
                 print("error opening", csv_name, e)
             else:
                 tstamp = pd.Timestamp.now().round(freq='T') # round current time to minute
-                max_index = df.index.max() # index of last entry
+                max_index = len(df) # index of last entry
                 df.loc[max_index+1] = [tstamp, mood, journal] # new entry
                 df.to_csv(csv_name, index=False) # overwrite csv file with new df
         
@@ -164,14 +164,14 @@ def register():
         db.session.add(new_user)
         db.session.commit() #commit new user to database
         
-        # create new, empty dataframe for the registered user
+        # create new, empty dataframe for this registered user
         username=form.username.data
         # 2 columns: datetime of post, moodlevel, journal entry
         df = pd.DataFrame({'Date': pd.Series(dtype='datetime64[ns]'), # datetime data w/o timezone
                            'Moodlevel': pd.Series(dtype='int'),
                            'Journal': pd.Series(dtype='str')
                           })
-        df.to_csv(username + ".csv", index=False) # save empty df w/o leftmost index column
+        df.to_csv(username + ".csv", index=False) # save empty (left the index column in as we later need it to count how many entries we have)
         
         return redirect(url_for('login'))
 
