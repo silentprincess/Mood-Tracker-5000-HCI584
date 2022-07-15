@@ -1,4 +1,4 @@
-import antigravity
+#import antigravity
 from asyncio.base_futures import _format_callbacks
 from operator import and_
 from smtplib import SMTPRecipientsRefused
@@ -16,6 +16,7 @@ from sqlalchemy import extract
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import insert
 import pandas as pd
+import csv
 
 
 app = Flask(__name__)
@@ -26,8 +27,6 @@ app.config['SECRET_KEY'] = 'thisisasecretkey'
 login_manager = LoginManager() #allows app and flask to handle things while logging in
 login_manager.init_app(app)
 login_manager.login_view = "login"
-metadata = db.MetaData()
-userinfo = db.Table('userinfo', metadata)
 
 @login_manager.user_loader #reloads the user object from the user ID stored in session
 def load_user(user_id):
@@ -64,7 +63,7 @@ def validate_username(self, username):
     if existing_user_username: #if there's a duplicate username, gives validation error
         raise ValidationError("That username is taken. Please choose a different one.")
 
-def val_email(self, email):
+def validate_email(self, email):
     existing_user_email = User.query.filter_by(email=email.data).first()
     if existing_user_email:
         raise ValidationError("That email has already been used, choose a different one.")
@@ -111,7 +110,8 @@ def moodentry():
                 journal = form.journal.data
             print("Here is your journal entry:", journal)
 
-            csv_name=session["user"] + ".csv"
+            #add new row to csv file
+            csv_name = session["user"] + ".csv"
             try:
                 df = pd.read_csv(csv_name)
             except Exception as e: 
@@ -134,8 +134,12 @@ def login():
         if user: #if user is registered
             if bcrypt.check_password_hash(user.password, form.password.data): #checks password, if everything matches up redirects to dashboard
                 login_user(user)
+
+
                 session["user"]= user.username
                 return redirect(url_for('dashboard'))
+            else:
+                print("Wrong username or password!")
     return render_template('login.html', form = form)
 
 @app.route('/logout', methods=['GET', 'POST']) #creates logout page
@@ -158,14 +162,20 @@ def register():
         new_user = User(email=form.email.data, username=form.username.data, password = hashed_password)
         db.session.add(new_user)
         db.session.commit() #commit new user to database
+
+
         username=form.username.data
-        df = pd.DataFrame({'Date': pd.Series(dtype='datetime64[ns]'), 'Moodlevel': pd.Series(dtype='int'), 'Journal': pd.Series(dtype='str')})
+
+        df = pd.DataFrame({'Date': pd.Series(dtype='datetime64[ns]'), 
+                           'Moodlevel': pd.Series(dtype='int'),
+                           'Journal': pd.Series(dtype='str')
+                           })
         df.to_csv(username + ".csv", index=False)
+
+
         return redirect(url_for('login'))
 
     return render_template('register.html', form = form)
-
-query = db.select([userinfo])
 
 if __name__ == '__main__':
     app.run(debug=True)
