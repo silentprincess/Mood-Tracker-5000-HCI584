@@ -16,7 +16,6 @@ from sqlalchemy import extract
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import insert
 import pandas as pd
-import csv
 
 
 app = Flask(__name__)
@@ -170,7 +169,9 @@ def register():
                            'Moodlevel': pd.Series(dtype='int'),
                            'Journal': pd.Series(dtype='str')
                            })
-        df.to_csv(username + ".csv", index=False)
+       
+        import csv
+        df.to_csv(username + ".csv", index=False, quoting=csv.QUOTE_NONE)
 
 
         return redirect(url_for('login'))
