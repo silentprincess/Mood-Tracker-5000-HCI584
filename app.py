@@ -34,7 +34,7 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) #creates unique ID for each row in table
-    email = db.Column(db.String(20), nullable = False, unique=True) #email can have max of 20 characters, field cannot be empty, cannot be 2 or more of the same email
+    email = db.Column(db.String(50), nullable = False, unique=True) #email can have max of 20 characters, field cannot be empty, cannot be 2 or more of the same email
     username = db.Column(db.String(20), nullable=False, unique=True) #username can only have 20 characters, field cannot be empty, cannot be 2 or more of the same username
     password = db.Column(db.String(80), nullable = False) #pass can only have 80 characters, field cannot be empty
     moods = db.relationship('Mood', backref='User', lazy = True) #creating link between user and mood table (I think)
@@ -52,7 +52,7 @@ class Mood(db.Model): #creating mood table
     journal = db.Column(db.String(1000)) #creates column for journal entries
 
 class RegisterForm(FlaskForm): #creates register form to be added to html pages
-    email = StringField(validators=[InputRequired(), Email(message='Invalid email, please try again.'), Length (min=3, max=16)], render_kw={"placeholder": "Email"})
+    email = StringField(validators=[InputRequired(), Email(message='Invalid email, please try again.'), Length (min=3, max=30)], render_kw={"placeholder": "Email"})
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Register")
