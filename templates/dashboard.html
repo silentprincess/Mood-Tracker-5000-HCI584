@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 </head>
 <body>
-    <h1 style="color:rgb(73, 56, 67)">Hello you are logged in.</h1>
+    <h1 style="color:rgb(73, 56, 67)">Hello, you are logged in!</h1>
+    <img src="{{url_for('static', filename='PonderLogo.png')}}" height = "400" width="600"/><br>
     <a href="{{url_for('moodentry')}}">Mood Entry</a><br>
     <a href="{{url_for('logout')}}">Logout</a>
 </body>
