@@ -120,6 +120,7 @@ def moodentry():
                 max_index = len(df)
                 df.loc[max_index+1] = [tstamp, mood, journal]
                 df.to_csv(csv_name, index = False)
+                return redirect(url_for('dashboard')) #redirects to dashboard (only 1 entry per day)
 
     return render_template('moodentry.html', form = form)
 
