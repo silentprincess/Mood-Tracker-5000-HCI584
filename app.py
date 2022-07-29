@@ -167,7 +167,7 @@ def register():
         username=form.username.data
 
         df = pd.DataFrame({'Date': pd.Series(dtype='datetime64[ns]'), 
-                           'Moodlevel': pd.Series(dtype='int'),
+                           'Mood': pd.Series(dtype='int'),
                            'Journal': pd.Series(dtype='str')
                            })
        
