@@ -120,7 +120,7 @@ def moodentry():
                 max_index = len(df)
                 df.loc[max_index+1] = [tstamp, mood, journal]
                 df.to_csv(csv_name, index = False)
-                return redirect(url_for('dashboard')) #redirects to dashboard (only 1 entry per day)
+                return redirect(url_for('thankyou')) #redirects to dashboard (only 1 entry per)
 
     return render_template('moodentry.html', form = form)
 
@@ -178,6 +178,11 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html', form = form)
+
+@app.route('/thankyou', methods = ['GET', 'POST']) #creates User Dash
+@login_required
+def thankyou():
+    return render_template('thankyou.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
