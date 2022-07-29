@@ -9,6 +9,17 @@
 </head>
 <body>
     <h1 style="color:rgb(73, 56, 67)">Here are your previous entries:</br></h1>
+    <br>
+    <table id="preventry">
+        {% for row in csv %}
+          <tr>
+          {% for col in row.split(",") %}
+          <td>{{ col }}</td>
+          {% endfor %}
+          </tr>
+        {% endfor %}
+        </table>
+    <br>
     <a href="{{url_for('logout')}}">Logout</a>
 </body>
 </html>

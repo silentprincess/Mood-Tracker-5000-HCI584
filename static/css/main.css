@@ -19,3 +19,18 @@ button{
     border-radius: 0px;
 
 }
+
+table, th, td {
+
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    
+    }
+
+th, td {
+    
+    padding: 10px;
+
+    }

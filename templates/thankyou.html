@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Thank You</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 </head>
 <body>
-    <h1 style="color:rgb(73, 56, 67)">Thank you for your entry. Come back tomorrow to enter another!</h1>
+    <h1 style="color:rgb(73, 56, 67)">Thank you for your entry.<br> Come back tomorrow to enter another!</br></h1>
+    <a href="{{url_for('previousentries')}}">Previous Entries</a><br>
     <a href="{{url_for('logout')}}">Logout</a>
 </body>
 </html>
