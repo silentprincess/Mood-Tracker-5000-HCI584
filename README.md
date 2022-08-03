@@ -1,6 +1,8 @@
 # Ponder
 ## Sarah Hernandez - Summer 2022 - HCI 584
-### A mood tracking web application developed for HCI 584 at Iowa State University. All logos and images/gfx were also created by me.
+### A mood tracking web application developed for HCI 584 at Iowa State University.
+
+All logos and images/gfx were also created by me- please do not use them for any other purpose besides playing with my code or showing it to someone else.
 
 **HOW TO USE THIS CODE**
 
